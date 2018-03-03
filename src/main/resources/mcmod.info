@@ -1,0 +1,16 @@
+[
+{
+  "modid": "automine",
+  "name": "AutoMine",
+  "description": "We burned the forest down.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["jD91mZM2"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

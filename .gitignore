@@ -1,0 +1,32 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+gradle
+gradlew
+gradlew.bat
+
+# other
+eclipse
+run
+
+# forge stuff
+forge-1.12.2-14.23.1.2603-changelog.txt
+gradle.properties
+MinecraftForge-Credits.txt
+Paulscode*
+CREDITS-fml.txt
