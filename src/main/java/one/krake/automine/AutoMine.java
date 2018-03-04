@@ -48,7 +48,8 @@ public class AutoMine {
         for (int relX = -reach; relX <= reach; ++relX) {
             for (int relY = -reach; relY <= reach; ++relY) {
                 for (int relZ = -reach; relZ <= reach; ++relZ) {
-                    if (Math.abs(relX) + Math.abs(relY) + Math.abs(relZ) > reach) {
+                    int dist = Math.abs(relX) + Math.abs(relY) + Math.abs(relZ);
+                    if (dist > reach) {
                         continue;
                     }
                     int posX = ((int) mc.player.posX) + relX;
@@ -58,8 +59,6 @@ public class AutoMine {
                     BlockPos pos = new BlockPos(posX, posY, posZ);
                     Block block = mc.world.getBlockState(pos).getBlock();
                     if (Block.isEqualTo(block, MainCommand.material)) {
-                        int dist = Math.abs(relX) + Math.abs(relY) + Math.abs(relZ);
-
                         if (dist < minDist) {
                             minDist = dist;
                             minPos = pos;
