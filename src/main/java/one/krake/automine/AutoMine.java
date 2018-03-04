@@ -45,9 +45,12 @@ public class AutoMine {
 
         int reach = (int) mc.playerController.getBlockReachDistance();
 
-        for (int relX = -reach; relX < reach; ++relX) {
-            for (int relY = -reach; relY < reach; ++relY) {
-                for (int relZ = -reach; relZ < reach; ++relZ) {
+        for (int relX = -reach; relX <= reach; ++relX) {
+            for (int relY = -reach; relY <= reach; ++relY) {
+                for (int relZ = -reach; relZ <= reach; ++relZ) {
+                    if (Math.abs(relX) + Math.abs(relY) + Math.abs(relZ) > reach) {
+                        continue;
+                    }
                     int posX = ((int) mc.player.posX) + relX;
                     int posY = ((int) mc.player.posY) + relY;
                     int posZ = ((int) mc.player.posZ) + relZ;
