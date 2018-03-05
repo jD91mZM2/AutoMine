@@ -39,42 +39,44 @@ public class AutoMine {
             return;
         }
 
-        int minDist = Integer.MAX_VALUE;
+        double minDist = Integer.MAX_VALUE;
         BlockPos minPos = null;
+        EnumFacing minFacing = null;
         Integer minX = null, minZ = null;
 
         int reach = (int) mc.playerController.getBlockReachDistance();
 
+        BlockPos playerPos = mc.player.getPosition();
+
         for (int relX = -reach; relX <= reach; ++relX) {
             for (int relY = -reach; relY <= reach; ++relY) {
                 for (int relZ = -reach; relZ <= reach; ++relZ) {
-                    int dist = Math.abs(relX) + Math.abs(relY) + Math.abs(relZ);
-                    if (dist > reach) {
+                    BlockPos pos = playerPos.add(relX, relY, relZ);
+
+                    EnumFacing facing = EnumFacing.getDirectionFromEntityLiving(pos, mc.player);
+                    double dist = mc.player.getPosition().distanceSq(pos.offset(facing));
+                    // Minecraft uses euclidean distance
+                    // distanceSq means it returns the result without sqrting it first
+                    if (dist > reach*reach) {
                         continue;
                     }
-                    int posX = ((int) mc.player.posX) + relX;
-                    int posY = ((int) mc.player.posY) + relY;
-                    int posZ = ((int) mc.player.posZ) + relZ;
 
-                    BlockPos pos = new BlockPos(posX, posY, posZ);
                     Block block = mc.world.getBlockState(pos).getBlock();
                     if (Block.isEqualTo(block, MainCommand.material)) {
                         if (dist < minDist) {
                             minDist = dist;
+                            minFacing = facing;
                             minPos = pos;
-                            minX = ((Integer) (relX)).compareTo(0);
-                            minZ = ((Integer) (relZ)).compareTo(0);
                         }
                     }
                 }
             }
         }
 
-        if (minPos == null || minX == null || minZ == null) {
+        if (minPos == null) {
             return;
         }
 
-        EnumFacing facing = EnumFacing.getDirectionFromEntityLiving(minPos, mc.player);
-        mc.playerController.onPlayerDamageBlock(minPos, facing);
+        mc.playerController.onPlayerDamageBlock(minPos, minFacing);
     }
 }
