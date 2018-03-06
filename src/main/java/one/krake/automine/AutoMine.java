@@ -46,12 +46,21 @@ public class AutoMine {
 
         int reach = (int) mc.playerController.getBlockReachDistance();
 
-        BlockPos playerPos = mc.player.getPosition();
+        BlockPos playerPos = new BlockPos(
+            Math.floor(mc.player.posX),
+            Math.floor(mc.player.posY) + 1,
+            Math.floor(mc.player.posZ)
+        );
 
         for (int relX = -reach; relX <= reach; ++relX) {
             for (int relY = -reach; relY <= reach; ++relY) {
                 for (int relZ = -reach; relZ <= reach; ++relZ) {
                     BlockPos pos = playerPos.add(relX, relY, relZ);
+
+                    Block block = mc.world.getBlockState(pos).getBlock();
+                    if (!Block.isEqualTo(block, MainCommand.material)) {
+                        continue;
+                    }
 
                     EnumFacing facing = EnumFacing.getDirectionFromEntityLiving(pos, mc.player);
                     double dist = mc.player.getPosition().distanceSq(pos.offset(facing));
@@ -61,13 +70,12 @@ public class AutoMine {
                         continue;
                     }
 
-                    Block block = mc.world.getBlockState(pos).getBlock();
-                    if (Block.isEqualTo(block, MainCommand.material)) {
-                        if (dist < minDist) {
-                            minDist = dist;
-                            minFacing = facing;
-                            minPos = pos;
-                        }
+                    if (mc.player.isCreative()) {
+                        mc.playerController.onPlayerDamageBlock(pos, facing);
+                    } else if (dist < minDist) {
+                        minDist = dist;
+                        minFacing = facing;
+                        minPos = pos;
                     }
                 }
             }
